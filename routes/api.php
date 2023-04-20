@@ -25,10 +25,37 @@ Route::get('/posts', function (){
     return Post::all();
 });
 
-Route::get('/posts', function (){
+Route::post('/posts', function (){
     return Post::create([
         'title' => request('title'),
         'content' => request('content')
     ]);
 });
 
+
+Route::put('/posts/{post}', function (Post $post){
+
+    $success = $post->update([
+        'title' => request('title'),
+        'content' => request('content')
+    ]);
+
+    return [
+        'success' => $success
+    ];
+
+});
+
+
+Route::delete('/posts/{post}', function (Post $post){
+
+    $success = $post->delete([
+        'title' => request('title'),
+        'content' => request('content')
+    ]);
+
+    return [
+        'Post delete success' => $success
+    ];
+
+});
