@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Post;
+use App\http\Controllers\PostsApiController;
 
 //path for the api
 //http://localhost/laravelapi3/public/api/posts
@@ -21,41 +22,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/posts', function (){
-    return Post::all();
-});
+Route::get('/posts', [PostsApiController::class, 'index']);
 
-Route::post('/posts', function (){
-    return Post::create([
-        'title' => request('title'),
-        'content' => request('content')
-    ]);
-});
+Route::post('/posts',[PostsApiController::class, 'store']);
 
+Route::put('/posts/{post}', [PostsApiController::class, 'update']);
 
-Route::put('/posts/{post}', function (Post $post){
-
-    $success = $post->update([
-        'title' => request('title'),
-        'content' => request('content')
-    ]);
-
-    return [
-        'success' => $success
-    ];
-
-});
-
-
-Route::delete('/posts/{post}', function (Post $post){
-
-    $success = $post->delete([
-        'title' => request('title'),
-        'content' => request('content')
-    ]);
-
-    return [
-        'Post delete success' => $success
-    ];
-
-});
+Route::delete('/posts/{post}', [PostsApiController::class, 'destroy']);
